@@ -1,0 +1,9 @@
+.image-rounded {
+  margin-bottom: 16px;
+  border-radius: 16px;
+  max-width: 100%;
+}
+
+.image {
+  max-width: 100%;
+}
