@@ -6,6 +6,9 @@ const Header = () => {
       <NavbarBrand href="/">THAT Conference</NavbarBrand>
       <Nav className="ml-auto" navbar>
         <NavItem>
+          <NavLink href="/schedule">Schedule</NavLink>
+        </NavItem>
+        <NavItem>
           <NavLink href="/speakers">Speakers</NavLink>
         </NavItem>
         <NavItem>
