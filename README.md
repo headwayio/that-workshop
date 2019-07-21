@@ -35,3 +35,18 @@ We will be test-driving our project using Cypress. Our final systems check will 
 ```
 npm run cypress:open
 ```
+
+### About
+
+Visitors to our application will need to know who we are and how we can help. Our first feature will be an "About" page.
+
+Here is copy for you to use on your "About" page:
+
+```
+THAT Conference
+
+We're glad you're here! Please contact us if we can be of assistance:
+
+matt@headway.io
+tim@headway.io
+```
