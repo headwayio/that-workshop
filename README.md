@@ -50,3 +50,9 @@ We're glad you're here! Please contact us if we can be of assistance:
 matt@headway.io
 tim@headway.io
 ```
+
+### Layout
+
+Our next goal will be to create a consistent layout between pages within our application. Additionally, navigating between pages within our application will require a navigation bar.
+
+We can accomplish this with a shared layout component and header component.
