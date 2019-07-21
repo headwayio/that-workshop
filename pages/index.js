@@ -3,7 +3,6 @@ import { useQuery } from "@apollo/react-hooks";
 import "bootstrap/dist/css/bootstrap.css";
 import { Jumbotron, Button } from "reactstrap";
 import withData from "../lib/apollo";
-import "../static/css/styles.css";
 
 const GET_ABOUT_MESSAGE = gql`
   query aboutMessage {
@@ -41,6 +40,17 @@ const index = () => {
           <Button color="primary">Learn More</Button>
         </p>
       </Jumbotron>
+      <style jsx>{`
+        .image-rounded {
+          margin-bottom: 16px;
+          border-radius: 16px;
+        }
+
+        .image {
+          width: 512px;
+          max-width: 100%;
+        }
+      `}</style>
     </div>
   );
 };
