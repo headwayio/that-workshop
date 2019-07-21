@@ -11,12 +11,10 @@ const GET_ABOUT_MESSAGE = gql`
 `;
 
 const index = () => {
-  const {
-    data: { aboutMessage }
-  } = useQuery(GET_ABOUT_MESSAGE, {});
+  const { data: { aboutMessage = "" } = {} } = useQuery(GET_ABOUT_MESSAGE, {});
   return (
     <div>
-      <Jumbotron>
+      <Jumbotron className="mb-0">
         <h1 className="display-3">Welcome!</h1>
         <p className="lead">
           THAT Conference is the "Summer Camp for Geeks" that combines
@@ -25,8 +23,8 @@ const index = () => {
           in Wisconsin Dells. Over four days, folks of diverse technology
           backgrounds and expertise levels gather to take advantage of multiple
           learning mediums to maximize one’s community and career advancements.
-          <br />
-          <br />
+        </p>
+        <p class="lead">
           Engage with true practitioners, thought leaders and entrepreneurs
           while enjoying the perks of summer camp at a giant waterpark. Join us
           and become part of THAT family.
@@ -36,12 +34,23 @@ const index = () => {
         <img
           src="/static/clark.png"
           alt="Image of Clark Sell"
-          style={{ borderRadius: 16, marginBottom: 16 }}
+          className="image image-rounded"
         />
         <p className="lead">
           <Button color="primary">Learn More</Button>
         </p>
       </Jumbotron>
+      <style jsx>{`
+        .image-rounded {
+          margin-bottom: 16px;
+          border-radius: 16px;
+        }
+
+        .image {
+          width: 512px;
+          max-width: 100%;
+        }
+      `}</style>
     </div>
   );
 };
