@@ -1,8 +1,9 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { Jumbotron, Button } from "reactstrap";
+import Layout from '../components/Layout';
 
 const index = () =>
-  <div>
+  <Layout>
     <Jumbotron className="mb-0">
       <h1 className="display-3">Welcome!</h1>
       <p className="lead">
@@ -28,6 +29,6 @@ const index = () =>
         <Button color="primary">Learn More</Button>
       </p>
     </Jumbotron>
-  </div>
+  </Layout>
 
 export default index;
