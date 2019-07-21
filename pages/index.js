@@ -28,6 +28,17 @@ const index = () =>
         <Button color="primary">Learn More</Button>
       </p>
     </Jumbotron>
+    <style jsx>{`
+      .image-rounded {
+        margin-bottom: 16px;
+        border-radius: 16px;
+      }
+
+      .image {
+        width: 512px;
+        max-width: 100%;
+      }
+    `}</style>
   </div>
 
 export default index;
