@@ -1,6 +1,5 @@
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
-import "bootstrap/dist/css/bootstrap.css";
 import { Jumbotron, Button } from "reactstrap";
 import withData from "../lib/apollo";
 import Layout from "../components/Layout";
