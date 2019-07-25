@@ -11,6 +11,22 @@ fs.writeFileSync(filePath, JSON.stringify(database()));
 const adapter = new FileSync(filePath);
 const db = low(adapter);
 
+const dbHelper = {
+  findAll: type => db.get(type).value(),
+  findOne: (type, id) =>
+    db
+      .get(type)
+      .find({ id })
+      .value(),
+  create: (type, values) => {
+    const id = uuidv4();
+    db.get(type)
+      .push({ ...values, id })
+      .write();
+    return dbHelper.findOne(type, id);
+  }
+};
+
 const schema = gql`
   type Query {
     aboutMessage: String
