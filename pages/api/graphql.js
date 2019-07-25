@@ -26,17 +26,55 @@ const dbHelper = {
     return dbHelper.findOne(type, id);
   }
 };
+const avatarUrl = "https://api.adorable.io/avatars/64/";
+const speakerData = [
+  {
+    id: 1,
+    firstname: "Matt",
+    lastname: "Reetz",
+    title: "Software Engineer",
+    company: "Headway",
+    avatar: `${avatarUrl}matt`,
+    biography: "Matt is a coding ninja.",
+    email: "matt@headway.io"
+  },
+  {
+    id: 2,
+    firstname: "Tim",
+    lastname: "Gremore",
+    title: "Software Engineer",
+    company: "Headway",
+    avatar: `${avatarUrl}tim`,
+    biography: "Tim is a coding wizard.",
+    email: "tim@headway.io"
+  }
+];
 
 const schema = gql`
   type Query {
     aboutMessage: String
+    speakers: [Speaker]
+  }
+
+  type Speaker {
+    id: ID!
+    firstname: String!
+    lastname: String!
+    title: String!
+    company: String!
+    avatar: String!
+    biography: String!
+    email: String!
   }
 `;
 
 const resolvers = {
   Query: {
     aboutMessage(parent, args, context) {
-      return 'THAT Conference was founded by this guy';
+      return "THAT Conference was founded by this guy";
+    },
+    speakers(parent, args, context) {
+      return speakerData;
     }
   }
 };
