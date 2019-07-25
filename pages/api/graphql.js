@@ -26,36 +26,8 @@ const dbHelper = {
     return dbHelper.findOne(type, id);
   }
 };
-const avatarUrl = "https://api.adorable.io/avatars/64/";
-const speakerData = [
-  {
-    id: 1,
-    firstname: "Matt",
-    lastname: "Reetz",
-    title: "Software Engineer",
-    company: "Headway",
-    avatar: `${avatarUrl}matt`,
-    biography: "Matt is a coding ninja.",
-    email: "matt@headway.io"
-  },
-  {
-    id: 2,
-    firstname: "Tim",
-    lastname: "Gremore",
-    title: "Software Engineer",
-    company: "Headway",
-    avatar: `${avatarUrl}tim`,
-    biography: "Tim is a coding wizard.",
-    email: "tim@headway.io"
-  }
-];
 
 const schema = gql`
-  type Query {
-    aboutMessage: String
-    speakers: [Speaker]
-  }
-
   type Speaker {
     id: ID!
     firstname: String!
@@ -66,16 +38,21 @@ const schema = gql`
     biography: String!
     email: String!
   }
+
+  type Query {
+    aboutMessage: String
+    speakers: [Speaker]
+    speaker(id: ID!): Speaker
+  }
 `;
 
 const resolvers = {
   Query: {
-    aboutMessage(parent, args, context) {
+    aboutMessage() {
       return "THAT Conference was founded by this guy";
     },
-    speakers(parent, args, context) {
-      return speakerData;
-    }
+    speakers: () => dbHelper.findAll("speakers"),
+    speaker: (_parent, { id }) => dbHelper.findOne("speakers", id)
   }
 };
 
