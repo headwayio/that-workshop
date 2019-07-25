@@ -1,7 +1,7 @@
 import Layout from "../components/Layout";
 import { ListGroup, ListGroupItem, Media } from "reactstrap";
 
-const schedule = [
+const scheduleItems = [
   {
     id: "1",
     title: "Conference Kickoff",
@@ -25,7 +25,7 @@ const Schedule = () => {
     <Layout>
       <h1 className="title">Schedule</h1>
       <ListGroup>
-        {schedule.map(schedule => {
+        {scheduleItems.map(schedule => {
           return (
             <ListGroupItem className="justify-content-between">
               <Media>
