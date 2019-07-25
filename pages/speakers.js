@@ -3,6 +3,7 @@ import { ListGroup, ListGroupItem, Media } from "reactstrap";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import withData from "../lib/apollo";
+import Link from "next/link";
 
 const GET_SPEAKERS = gql`
   query speakers {
@@ -15,6 +16,27 @@ const GET_SPEAKERS = gql`
     }
   }
 `;
+
+const SpeakerLink = ({
+  speaker: { id, firstname, lastname, avatar, biography }
+}) => (
+    <Link href="/speaker/[id]" as={`/speaker/${id}`}>
+      <Media>
+        <Media left>
+          <Media
+            object
+            src={avatar}
+            className="avatar"
+            alt="Generic placeholder image"
+          />
+        </Media>
+        <Media body>
+          <Media heading>{`${firstname} ${lastname}`}</Media>
+          {biography}
+        </Media>
+      </Media>
+    </Link>
+);
 
 const Speakers = () => {
   const { data: { speakers = [] } = {}, error } = useQuery(GET_SPEAKERS);
@@ -29,23 +51,8 @@ const Speakers = () => {
       <ListGroup>
         {speakers.map(speaker => {
           return (
-            <ListGroupItem className="justify-content-between">
-              <Media>
-                <Media left href={`speakers/${speaker.id}`}>
-                  <Media
-                    object
-                    src={speaker.avatar}
-                    className="avatar"
-                    alt="Generic placeholder image"
-                  />
-                </Media>
-                <Media body>
-                  <Media heading>
-                    {`${speaker.firstname} ${speaker.lastname}`}
-                  </Media>
-                  {speaker.biography}
-                </Media>
-              </Media>
+            <ListGroupItem action className="justify-content-between">
+              <SpeakerLink speaker={speaker} />
             </ListGroupItem>
           );
         })}
