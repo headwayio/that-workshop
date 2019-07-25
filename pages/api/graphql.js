@@ -39,10 +39,24 @@ const schema = gql`
     email: String!
   }
 
+  input SpeakerInput {
+    firstname: String!
+    lastname: String!
+    title: String!
+    company: String!
+    avatar: String!
+    biography: String!
+    email: String!
+  }
+
   type Query {
     aboutMessage: String
     speakers: [Speaker]
     speaker(id: ID!): Speaker
+  }
+
+  type Mutation {
+    createSpeaker(speaker: SpeakerInput!): Speaker
   }
 `;
 
@@ -53,6 +67,10 @@ const resolvers = {
     },
     speakers: () => dbHelper.findAll("speakers"),
     speaker: (_parent, { id }) => dbHelper.findOne("speakers", id)
+  },
+  Mutation: {
+    createSpeaker: (_parent, { speaker }) =>
+      dbHelper.create("speakers", speaker)
   }
 };
 
