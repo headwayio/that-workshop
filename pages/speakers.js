@@ -1,30 +1,28 @@
 import Layout from "../components/Layout";
 import { ListGroup, ListGroupItem, Media } from "reactstrap";
+import { gql } from "apollo-boost";
+import { useQuery } from "@apollo/react-hooks";
+import withData from "../lib/apollo";
 
-const avatarUrl = "https://api.adorable.io/avatars/64/";
-
-const speakers = [
-  {
-    id: 1,
-    firstname: "Matt",
-    lastname: "Reetz",
-    title: "Software Engineer",
-    company: "Headway",
-    avatar: `${avatarUrl}matt`,
-    biography: "Matt is a coding ninja."
-  },
-  {
-    id: 2,
-    firstname: "Tim",
-    lastname: "Gremore",
-    title: "Software Engineer",
-    company: "Headway",
-    avatar: `${avatarUrl}tim`,
-    biography: "Tim is a coding wizard."
+const GET_SPEAKERS = gql`
+  query speakers {
+    speakers {
+      id
+      firstname
+      lastname
+      avatar
+      biography
+    }
   }
-];
+`;
 
 const Speakers = () => {
+  const { data: { speakers = [] } = {}, error } = useQuery(GET_SPEAKERS);
+
+  if (error) {
+    console.error(error);
+  }
+
   return (
     <Layout>
       <h1 className="title">Speakers</h1>
@@ -65,4 +63,4 @@ const Speakers = () => {
   );
 };
 
-export default Speakers;
+export default withData(Speakers);
