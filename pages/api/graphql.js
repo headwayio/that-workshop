@@ -62,9 +62,7 @@ const schema = gql`
 
 const resolvers = {
   Query: {
-    aboutMessage() {
-      return "THAT Conference was founded by this guy";
-    },
+    aboutMessage: () => "THAT Conference was founded by this guy",
     speakers: () => dbHelper.findAll("speakers"),
     speaker: (_parent, { id }) => dbHelper.findOne("speakers", id)
   },
