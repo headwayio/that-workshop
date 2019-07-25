@@ -28,16 +28,47 @@ const dbHelper = {
 };
 
 const schema = gql`
+  type Speaker {
+    id: ID!
+    firstname: String!
+    lastname: String!
+    title: String!
+    company: String!
+    avatar: String!
+    biography: String!
+    email: String!
+  }
+
+  input SpeakerInput {
+    firstname: String!
+    lastname: String!
+    title: String!
+    company: String!
+    avatar: String!
+    biography: String!
+    email: String!
+  }
+
   type Query {
     aboutMessage: String
+    speakers: [Speaker]
+    speaker(id: ID!): Speaker
+  }
+
+  type Mutation {
+    createSpeaker(speaker: SpeakerInput!): Speaker
   }
 `;
 
 const resolvers = {
   Query: {
-    aboutMessage(parent, args, context) {
-      return 'THAT Conference was founded by this guy';
-    }
+    aboutMessage: () => "THAT Conference was founded by this guy",
+    speakers: () => dbHelper.findAll("speakers"),
+    speaker: (_parent, { id }) => dbHelper.findOne("speakers", id)
+  },
+  Mutation: {
+    createSpeaker: (_parent, { speaker }) =>
+      dbHelper.create("speakers", speaker)
   }
 };
 
