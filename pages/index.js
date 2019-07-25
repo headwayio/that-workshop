@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
-import "bootstrap/dist/css/bootstrap.css";
 import { Jumbotron, Button } from "reactstrap";
 import withData from "../lib/apollo";
+import Layout from "../components/Layout";
 
 const GET_ABOUT_MESSAGE = gql`
   query aboutMessage {
@@ -13,7 +13,7 @@ const GET_ABOUT_MESSAGE = gql`
 const index = () => {
   const { data: { aboutMessage = "" } = {} } = useQuery(GET_ABOUT_MESSAGE, {});
   return (
-    <div>
+    <Layout>
       <Jumbotron className="mb-0">
         <h1 className="display-3">Welcome!</h1>
         <p className="lead">
@@ -51,7 +51,7 @@ const index = () => {
           max-width: 100%;
         }
       `}</style>
-    </div>
+    </Layout>
   );
 };
 
