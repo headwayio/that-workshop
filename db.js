@@ -30,7 +30,7 @@ module.exports = () => ({
       description:
         "Conference Welcoming Party. Drinks and Food will be served.",
       speakerIds: ["2", "1"],
-      start: "2019-08-23T08:00:00.000Z",
+      start: "2019-08-23T21:00:00.000Z",
       hours: 1
     },
     {
@@ -38,7 +38,7 @@ module.exports = () => ({
       title: "Conference Send Off",
       description: "Good bye and good luck!",
       speakerIds: ["1", "2"],
-      start: "2019-08-24T08:00:00.000Z",
+      start: "2019-08-24T18:00:00.000Z",
       hours: 0.5
     }
   ]
