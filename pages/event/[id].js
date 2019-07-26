@@ -3,7 +3,17 @@ import { useRouter } from "next/router";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import withData from "../../lib/apollo";
+<<<<<<< HEAD
 import { Card, CardText, CardBody, CardTitle, CardSubtitle } from "reactstrap";
+=======
+import {
+  Card,
+  CardText,
+  CardBody,
+  CardTitle,
+  CardSubtitle
+} from "reactstrap";
+>>>>>>> Add event details page to navigate to
 
 const GET_EVENT = gql`
   query event($id: ID!) {
@@ -36,7 +46,11 @@ const Event = () => {
   if (!data || !data.event || error) return null;
 
   const {
+<<<<<<< HEAD
     event: { title, description, start, hours, speakers }
+=======
+    event: { id: eventId, title, description, start, hours, speakers }
+>>>>>>> Add event details page to navigate to
   } = data;
 
   return (
