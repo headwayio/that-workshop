@@ -62,7 +62,7 @@ const schema = gql`
     aboutMessage: String
     speakers: [Speaker]
     speaker(id: ID!): Speaker
-    events: [Event]
+    events(filter: String): [Event]
     event(id: ID!): Event
   }
 
@@ -71,12 +71,47 @@ const schema = gql`
   }
 `;
 
+const speakersForEvent = event => {
+  const allSpeakers = dbHelper.findAll("speakers");
+  return event.speakerIds.map(id =>
+    allSpeakers.find(speaker => speaker.id === id)
+  );
+};
+
 const resolvers = {
   Query: {
     aboutMessage: () => "THAT Conference was founded by this guy",
     speakers: () => dbHelper.findAll("speakers"),
     speaker: (_parent, { id }) => dbHelper.findOne("speakers", id),
-    events: () => dbHelper.findAll("events"),
+    events: (_parent, { filter }) => {
+      const allEvents = dbHelper.findAll("events");
+      if (!filter || filter === "") return allEvents;
+
+      const eventsWithSpeakers = allEvents.map(event => ({
+        ...event,
+        speakers: speakersForEvent(event)
+      }));
+
+      const filtered = eventsWithSpeakers.filter(event => {
+        const speakers = event.speakers
+          .map(
+            speaker =>
+              `${speaker.firstname}${speaker.lastname}${speaker.biography}`
+          )
+          .join();
+
+        const searchString = [event.title, event.description, speakers]
+          .join()
+          .replace(/\s/g, "")
+          .toLowerCase();
+
+          const filterString = filter.replace(/\s/g, "").toLowerCase();
+
+        return searchString.includes(filterString);
+      });
+
+      return filtered;
+    },
     event: (_parent, { id }) => dbHelper.findOne("events", id)
   },
   Mutation: {
@@ -84,12 +119,7 @@ const resolvers = {
       dbHelper.create("speakers", speaker)
   },
   Event: {
-    speakers: event => {
-      const allSpeakers = dbHelper.findAll("speakers");
-      return event.speakerIds.map(id =>
-        allSpeakers.find(speaker => speaker.id === id)
-      );
-    }
+    speakers: event => speakersForEvent(event)
   }
 };
 
