@@ -3,6 +3,7 @@ import { ListGroup, ListGroupItem, Media } from "reactstrap";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import withData from "../lib/apollo";
+import Link from "next/link";
 
 const GET_EVENTS = gql`
   query {
@@ -13,6 +14,17 @@ const GET_EVENTS = gql`
     }
   }
 `;
+
+const EventLink = ({ event: { id, title, description } }) => (
+  <ListGroupItem action className="justify-content-between">
+    <Link href="/event/[id]" as={`/event/${id}`}>
+      <Media body>
+        <Media heading>{title}</Media>
+        {description}
+      </Media>
+    </Link>
+  </ListGroupItem>
+);
 
 const Schedule = () => {
   const { data: { events = [] } = {}, error } = useQuery(GET_EVENTS);
@@ -25,19 +37,9 @@ const Schedule = () => {
     <Layout>
       <h1 className="title">Schedule</h1>
       <ListGroup>
-        {events.map(event => {
-          return (
-            <ListGroupItem className="justify-content-between">
-              <Media>
-                <Media left href={`event/${event.id}`} />
-                <Media body>
-                  <Media heading>{event.title}</Media>
-                  {event.description}
-                </Media>
-              </Media>
-            </ListGroupItem>
-          );
-        })}
+        {events.map(event => (
+          <EventLink event={event} />
+        ))}
       </ListGroup>
       <style jsx global>{`
         .title {
