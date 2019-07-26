@@ -49,10 +49,20 @@ const schema = gql`
     email: String!
   }
 
+  type Event {
+    id: ID!
+    title: String!
+    description: String
+    start: String
+    hours: Float
+    speakers: [Speaker]
+  }
+
   type Query {
     aboutMessage: String
     speakers: [Speaker]
     speaker(id: ID!): Speaker
+    events: [Event]
   }
 
   type Mutation {
@@ -64,11 +74,20 @@ const resolvers = {
   Query: {
     aboutMessage: () => "THAT Conference was founded by this guy",
     speakers: () => dbHelper.findAll("speakers"),
-    speaker: (_parent, { id }) => dbHelper.findOne("speakers", id)
+    speaker: (_parent, { id }) => dbHelper.findOne("speakers", id),
+    events: () => dbHelper.findAll("events")
   },
   Mutation: {
     createSpeaker: (_parent, { speaker }) =>
       dbHelper.create("speakers", speaker)
+  },
+  Event: {
+    speakers: event => {
+      const allSpeakers = dbHelper.findAll("speakers");
+      return event.speakerIds.map(id =>
+        allSpeakers.find(speaker => speaker.id === id)
+      );
+    }
   }
 };
 
