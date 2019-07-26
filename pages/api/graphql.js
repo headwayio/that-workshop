@@ -63,6 +63,7 @@ const schema = gql`
     speakers: [Speaker]
     speaker(id: ID!): Speaker
     events: [Event]
+    event(id: ID!): Event
   }
 
   type Mutation {
@@ -75,7 +76,8 @@ const resolvers = {
     aboutMessage: () => "THAT Conference was founded by this guy",
     speakers: () => dbHelper.findAll("speakers"),
     speaker: (_parent, { id }) => dbHelper.findOne("speakers", id),
-    events: () => dbHelper.findAll("events")
+    events: () => dbHelper.findAll("events"),
+    event: (_parent, { id }) => dbHelper.findOne("events", id)
   },
   Mutation: {
     createSpeaker: (_parent, { speaker }) =>
