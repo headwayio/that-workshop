@@ -1,8 +1,10 @@
-import "bootstrap/dist/css/bootstrap.css";
+import { gql } from "apollo-boost";
+import { useQuery } from "@apollo/react-hooks";
 import { Jumbotron, Button } from "reactstrap";
+import Layout from "../components/Layout";
 
 const index = () =>
-  <div>
+  <Layout>
     <Jumbotron className="mb-0">
       <h1 className="display-3">Welcome!</h1>
       <p className="lead">
@@ -39,6 +41,6 @@ const index = () =>
         max-width: 100%;
       }
     `}</style>
-  </div>
+  </Layout>
 
 export default index;
