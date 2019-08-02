@@ -8,6 +8,9 @@ const schema = gql`
 
 const resolvers = {
   Query: {
+    aboutMessage() {
+      return 'THAT Conference was founded by this guy';
+    }
   }
 };
 
