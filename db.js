@@ -22,5 +22,24 @@ module.exports = () => ({
       biography: "Tim is a coding wizard.",
       email: "tim@headway.io"
     }
+  ],
+  events: [
+    {
+      id: "1",
+      title: "Conference Kickoff",
+      description:
+        "Conference Welcoming Party. Drinks and Food will be served.",
+      speakerIds: ["2", "1"],
+      start: "2019-08-23T08:00:00.000Z",
+      hours: 1
+    },
+    {
+      id: "2",
+      title: "Goodbye Conference",
+      description: "Farewell! Good bye and good luck!",
+      speakerIds: ["1", "2"],
+      start: "2019-08-24T08:00:00.000Z",
+      hours: 0.5
+    }
   ]
 });
