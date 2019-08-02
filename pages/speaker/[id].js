@@ -12,7 +12,32 @@ import {
   CardSubtitle,
 } from "reactstrap";
 
+const GET_SPEAKER = gql`
+  query speaker($id: ID!) {
+    speaker(id: $id) {
+      speakerId: id
+      firstname
+      lastname
+      avatar
+      biography
+      email
+      title
+      company
+    }
+  }
+`;
+
 const Speaker = () => {
+  const {
+    query: { id }
+  } = useRouter();
+
+  const { data, error } = useQuery(GET_SPEAKER, {
+    variables: { id }
+  });
+
+  if (!data || !data.speaker || error) return null;
+
   const {
     speaker: {
       firstname,
@@ -24,18 +49,7 @@ const Speaker = () => {
       title,
       company
     }
-  } = {
-    speaker: {
-      firstname: '',
-      lastname: '',
-      speakerId: '1',
-      avatar: null,
-      biography: '',
-      email: '',
-      title: '',
-      company: '',
-    }
-  };
+  } = data;
 
   return (
     <Layout>
