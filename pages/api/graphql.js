@@ -41,12 +41,14 @@ const schema = gql`
 
   type Query {
     aboutMessage: String
+    speakers: [Speaker]
   }
 `;
 
 const resolvers = {
   Query: {
     aboutMessage: () => "THAT Conference was founded by this guy",
+    speakers: () => dbHelper.findAll("speakers"),
   },
 };
 
