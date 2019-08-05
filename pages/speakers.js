@@ -1,13 +1,14 @@
+import { useState } from "react";
 import Layout from "../components/Layout";
-import { ListGroup, ListGroupItem, Media } from "reactstrap";
+import { ListGroup, ListGroupItem, Media, Input, Button } from "reactstrap";
 import { gql } from "apollo-boost";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import withData from "../lib/apollo";
 import Link from "next/link";
 
 const GET_SPEAKERS = gql`
-  query speakers {
-    speakers {
+  query speakers($filter: String) {
+    speakers(filter: $filter) {
       id
       firstname
       lastname
@@ -17,30 +18,42 @@ const GET_SPEAKERS = gql`
   }
 `;
 
+const CREATE_SPEAKER = gql`
+  mutation create($speaker: SpeakerInput!) {
+    createSpeaker(speaker: $speaker) {
+      firstname
+    }
+  }
+`;
+
 const SpeakerLink = ({
   speaker: { id, firstname, lastname, avatar, biography }
 }) => (
-    <Link href="/speaker/[id]" as={`/speaker/${id}`}>
-      <Media>
-        <Media left>
-          <Media
-            object
-            src={avatar}
-            className="avatar"
-            alt="Generic placeholder image"
-          />
-        </Media>
-        <Media body>
-          <Media heading>{`${firstname} ${lastname}`}</Media>
-          {biography}
-        </Media>
+  <Link href="/speaker/[id]" as={`/speaker/${id}`}>
+    <Media>
+      <Media left>
+        <Media
+          object
+          src={avatar}
+          className="avatar"
+          alt="Generic placeholder image"
+        />
       </Media>
-    </Link>
+      <Media body>
+        <Media heading>{`${firstname} ${lastname}`}</Media>
+        {biography}
+      </Media>
+    </Media>
+  </Link>
 );
 
 const Speakers = () => {
-  const { data: { speakers = [] } = {}, error } = useQuery(GET_SPEAKERS);
-
+  const [filter, setFilter] = useState(null);
+  const [firstName, setFirstName] = useState(null);
+  const { data: { speakers = [] } = {}, error } = useQuery(GET_SPEAKERS, {
+    variables: { filter }
+  });
+  const [createSpeaker] = useMutation(CREATE_SPEAKER);
   if (error) {
     console.error(error);
   }
@@ -48,6 +61,13 @@ const Speakers = () => {
   return (
     <Layout>
       <h1 className="title">Speakers</h1>
+      <Input
+        className="search"
+        placeholder="Search"
+        onChange={e => {
+          setFilter(e.target.value);
+        }}
+      />
       <ListGroup>
         {speakers.map(speaker => {
           return (
@@ -57,6 +77,32 @@ const Speakers = () => {
           );
         })}
       </ListGroup>
+      <Input
+        className="search"
+        placeholder="first name"
+        onChange={e => {
+          setFirstName(e.target.value);
+        }}
+      />
+      <Button
+        onClick={() => {
+          createSpeaker({
+            variables: {
+              speaker: {
+                firstname: firstName,
+                lastname: "Reetz",
+                title: "Software Engineer",
+                company: "Headway",
+                avatar: `https://api.adorable.io/avatars/64/${firstName}`,
+                biography: "Matt is a coding ninja.",
+                email: "matt@headway.io"
+              }
+            }
+          });
+        }}
+      >
+        Create
+      </Button>
       <style jsx global>{`
         .title {
           margin: 16px;

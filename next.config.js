@@ -7,7 +7,7 @@ module.exports = phase => {
   const env = {
     BASE_URL: (() => {
       if (isDev) return "http://localhost:3000";
-      return "https://that.my-zeit-account.now.sh";
+      return "https://that.matthewcarlreetz.now.sh";
     })()
   };
 

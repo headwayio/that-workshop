@@ -39,19 +39,49 @@ const schema = gql`
     email: String!
   }
 
+  input SpeakerInput {
+    firstname: String!
+    lastname: String!
+    title: String!
+    company: String!
+    avatar: String!
+    biography: String!
+    email: String!
+  }
+
   type Query {
     aboutMessage: String
-    speakers: [Speaker]
+    speakers(filter: String): [Speaker]
     speaker(id: ID!): Speaker
+  }
+
+  type Mutation {
+    createSpeaker(speaker: SpeakerInput!): Speaker
   }
 `;
 
 const resolvers = {
   Query: {
     aboutMessage: () => "THAT Conference was founded by this guy",
-    speakers: () => dbHelper.findAll("speakers"),
-    speaker: (_parent, { id }) => dbHelper.findOne("speakers", id),
+    speakers: (_parent, { filter }) => {
+      const allSpeakers = dbHelper.findAll("speakers");
+      if (!filter || filter === "") return allSpeakers;
+
+      return allSpeakers.filter(speaker => {
+        const { firstname, lastname } = speaker;
+        const fullname = `${firstname} ${lastname}`.toLowerCase();
+        return fullname.includes(filter.toLowerCase());
+      });
+    },
+    speaker: (_parent, { id }) => dbHelper.findOne("speakers", id)
   },
+  Mutation: {
+    createSpeaker: (_parent, { speaker }) => {
+      const id = uuidv4();
+      console.log(id);
+      return dbHelper.create("speakers", { id, ...speaker });
+    }
+  }
 };
 
 const apolloServer = new ApolloServer({ typeDefs: schema, resolvers });
